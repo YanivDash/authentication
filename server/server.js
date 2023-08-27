@@ -1,9 +1,14 @@
 import express from "express";
-import mysql from "mysql";
+
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
+import { db } from "./database.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+const port = process.env.PORT || 4000;
 
 const salt = 10;
 
@@ -25,17 +30,9 @@ app.use(
 // used to parse cookies sent by the client's browser and make them available in the req.cookies object
 app.use(cookieParser());
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "authtest1",
-});
-
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    console.log(req);
     return res.json({ Error: "user not authorized", token });
   } else {
     jwt.verify(token, "jwt-secret-key", (err, decoded) => {
@@ -69,7 +66,7 @@ app.post("/register", (req, res) => {
       if (err) return res.json({ Error: "Error for hasing password" });
       const values = [req.body.name, req.body.email, hash];
 
-      db.query(sql, [values], (err, result) => {
+      db.query(sql, [values], (err) => {
         if (err) return res.json({ Error: "Error while inserting in db" });
         return res.json({ Status: "success" });
       });
@@ -112,6 +109,6 @@ app.get("/logout", (req, res) => {
   return res.json({ Status: "success" });
 });
 
-app.listen(4000, () => {
-  console.log("listening on port 4000");
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
 });

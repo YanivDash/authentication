@@ -10,9 +10,8 @@ const Home = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    console.log("reloaded");
     axios
-      .get("http://localhost:4000")
+      .get("http://localhost:3306")
       .then((res) => {
         if (res.data.Status === "success") {
           setAuth(true);
@@ -27,7 +26,7 @@ const Home = () => {
 
   const handleDelete = () => {
     axios
-      .get("http://localhost:4000/logout")
+      .get("http://localhost:3306/logout")
       .then(() => {
         location.reload(true);
       })

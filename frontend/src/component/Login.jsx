@@ -14,7 +14,7 @@ const Login = () => {
     event.preventDefault();
 
     axios
-      .post("http://localhost:4000/login", values)
+      .post("http://localhost:3306/login", values)
       .then((res) => {
         if (res.data.Status === "success") {
           navigate("/");

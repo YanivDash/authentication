@@ -17,7 +17,7 @@ const Register = () => {
 
     if (confirmPassword === values.password) {
       axios
-        .post("http://localhost:4000/register", values)
+        .post("http://localhost:3306/register", values)
         .then((res) => {
           if (res.data.Status === "success") {
             navigate("/login");
